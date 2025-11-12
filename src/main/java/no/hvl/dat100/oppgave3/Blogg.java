@@ -64,8 +64,11 @@ public class Blogg {
 	}
 
 	public String toString() {
-
 		String melding = "";
+
+        if (this.nesteledig < 1) {
+            return melding;
+        }
 
         for (Innlegg innlegg : this.innleggstabell) {
             melding += innlegg.toString();
@@ -78,9 +81,9 @@ public class Blogg {
 	// valgfrie oppgaver nedenfor
 	
 	public void utvid() {
-		
+
         Innlegg[] større = new Innlegg[innleggstabell.length * 2];
-        
+
         for (int i = 0; i < this.nesteledig; i++) {
             større[i] = this.innleggstabell[i];
         }
