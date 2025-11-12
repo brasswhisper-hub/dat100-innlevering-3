@@ -74,6 +74,10 @@ public abstract class Innlegg {
 	
 	protected String toString(String prefix) {
 
+		if (prefix.length() > 0) {
+			prefix += "\n";
+		}
+
 		return prefix
 		+ this.id + "\n"
 		+ this.bruker + "\n" 
