@@ -11,7 +11,7 @@ public class SkrivBlogg {
 	public static boolean skriv(Blogg samling, String mappe, String filnavn) {
 
         try (PrintWriter skriver = new PrintWriter(filnavn)) {
-            skriver.print(samling.toString());
+            skriver.println(samling.toString());
         }
         catch (FileNotFoundException e) {
             return false;
