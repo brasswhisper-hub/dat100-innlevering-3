@@ -19,7 +19,7 @@ public class Blogg {
 
 	public int getAntall() {
 
-        return innleggstabell.length;
+        return nesteledig;
 	}
 	
 	public Innlegg[] getSamling() {
