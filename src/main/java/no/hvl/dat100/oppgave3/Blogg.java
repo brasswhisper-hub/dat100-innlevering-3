@@ -10,11 +10,12 @@ public class Blogg {
 
 	public Blogg() {
 
+        this(20);
     }
 	public Blogg(int lengde) {
 
-        innleggstabell = new Innlegg[lengde];
-        this.nesteledig = lengde;
+        this.innleggstabell = new Innlegg[lengde];
+        this.nesteledig = 0;
     }
 
 	public int getAntall() {
@@ -29,87 +30,101 @@ public class Blogg {
 	
 	public int finnInnlegg(Innlegg innlegg) {
 
-		boolean funnet = false;
-        int pos = 0;
-        while (pos<nesteledig && !funnet) {
-            if (innleggstabell[pos].erLik(innlegg)) {
-                funnet = true;
-            } else {
-                pos++;
+        for (int i = 0; i < this.nesteledig; i++) {
+            if(this.innleggstabell[i].erLik(innlegg)) {
+                return i;
             }
         }
-        if (funnet) {
-            return pos;
-        } else {
-            return -1;
-        }
+        return -1;
 	}
 
 	public boolean finnes(Innlegg innlegg) {
-		int pos = finnInnlegg(innlegg);
-        if (pos >= 0) {
-            return true;
-        } else {
-            return false;
-        }
+
+		return -1 != finnInnlegg(innlegg);
 	}
 
 	public boolean ledigPlass() {
-		boolean ledig = false;
-        for (int i = 0; i<innleggstabell.length; i++) {
-            if (innleggstabell[i] == null) {
-                ledig = true;
-            } else {
-                i++;
-            }
-        }
-        return ledig;
+
+		return this.nesteledig < this.innleggstabell.length;
 	}
 	
 	public boolean leggTil(Innlegg innlegg) {
 
-		boolean nyttInnlegg = finnInnlegg(innlegg) == -1;
-        if ( nyttInnlegg && nesteledig < innleggstabell.length) {
-            innleggstabell[nesteledig] = innlegg;
-            nesteledig++;
+        if (!this.ledigPlass()) {
+            return false;
+        }
+
+        try {
+            this.innleggstabell[this.nesteledig] = innlegg;
             return true;
-        } else {
+        } catch (Exception e) {
+            System.out.println(e);
             return false;
         }
 	}
 
 	public String toString() {
-		return getAntall() + "\n" + innleggstabell +"\n";
+		String melding = "";
+
+        if (this.nesteledig < 1) {
+            return melding;
+        }
+
+        for (Innlegg innlegg : this.innleggstabell) {
+            melding += innlegg.toString();
+        }
+        
+        return getAntall() + "\n"
+        + melding +"\n";
 	}
 
 	// valgfrie oppgaver nedenfor
 	
 	public void utvid() {
-		Innlegg[] større = new Innlegg[innleggstabell.length*2];
+
+        Innlegg[] større = new Innlegg[innleggstabell.length * 2];
+
+        for (int i = 0; i < this.nesteledig; i++) {
+            større[i] = this.innleggstabell[i];
+        }
+
+        this.innleggstabell = større;
 	}
 	
 	public boolean leggTilUtvid(Innlegg innlegg) {
 
-		throw new UnsupportedOperationException(TODO.method());
+        if (this.finnes(innlegg)) {
+            return false;
+        }
+
+        if (!this.ledigPlass()) {
+            this.utvid();
+        }
 		
+        return this.leggTilUtvid(innlegg);
 	}
 	
 	public boolean slett(Innlegg innlegg) {
 		
-		int pos = finnInnlegg(innlegg);
-        if (pos >= 0) {
-            nesteledig--;
-            innleggstabell[pos] = innleggstabell[nesteledig];
-            innleggstabell[nesteledig] = null;
-            return true;
-        } else {
+        int pos = this.finnInnlegg(innlegg);
+
+		if (pos == -1) { //sjekker om den ikke finnes.
             return false;
         }
+
+        try {
+            this.innleggstabell[pos] = null;
+            this.nesteledig--;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+
+        return true;
 	}
 	
 	public int[] search(String keyword) {
-		
+        
 		throw new UnsupportedOperationException(TODO.method());
-
 	}
 }

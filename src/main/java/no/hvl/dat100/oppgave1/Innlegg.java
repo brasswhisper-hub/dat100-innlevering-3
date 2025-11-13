@@ -1,24 +1,15 @@
 package no.hvl.dat100.oppgave1;
 
-import no.hvl.dat100.common.TODO;
-
 public abstract class Innlegg {
 	
-	private int id;
+	protected int id;
     private String bruker;
-    private String dato;
-    private int likes;
-	
-	public Innlegg() {
+    protected String dato;
+    protected int likes;
 
-	}
-	
 	public Innlegg(int id, String bruker, String dato) {
 
-		this.id = id;
-        this.bruker = bruker;
-        this.dato = dato;
-        this.likes = 0;
+		this(id,bruker,dato,0);
 	}
 
 	public Innlegg(int id, String bruker, String dato, int likes) {
@@ -31,8 +22,7 @@ public abstract class Innlegg {
 	
 	public String getBruker() {
 		
-		return bruker;
-
+		return this.bruker;
 	}
 
 	public void setBruker(String bruker) {
@@ -41,8 +31,8 @@ public abstract class Innlegg {
 	}
 
 	public String getDato() {
-		return dato;
 		
+		return this.dato;
 	}
 
 	public void setDato(String dato) {
@@ -52,47 +42,68 @@ public abstract class Innlegg {
 
 	public int getId() {
 
-        return id;
-
+        return this.id;
 	}
 
     public void setId(int id) {
-        // Metoden sto skrevet som "public int setId(int id) {...}
-        this.id = id;
+        
+		this.id = id;
     }
 
 	public int getLikes() {
 
-        return likes;
-
+        return this.likes;
 	}
 	
 	public void doLike () {
 
-        likes++;
+        this.likes++;
 	}
 	
 	public boolean erLik(Innlegg innlegg) {
 
-        if (innlegg.getId() == id) {
-            return true;
-        } else {
-            return false;
-        }
-
+		return innlegg.getId() == this.id;
 	}
 	
+	// eg ser kje ka som blir overrida her? -LBB
 	@Override
 	public String toString() {
 		
-		return id+"\n"+bruker+"\n"+dato+"\n"+likes+"\n";
-				
+		return this.toString("");
 	}
 	
+	protected String toString(String prefix) {
+
+		if (prefix.length() > 0) {
+			prefix += "\n";
+		}
+
+		return prefix
+		+ this.id + "\n"
+		+ this.bruker + "\n" 
+		+ this.dato + "\n" 
+		+ this.likes + "\n";
+	}
+
 	// Metoden nedenfor er kun for valgfri oppgave 6
 	public String toHTML() {
 		
-		throw new UnsupportedOperationException(TODO.method());
-				
+		return this.toHTML("");
+	}
+
+	// Metoden nedenfor er kun for valgfri oppgave 6
+	protected  String toHTML(String innerHTML) {
+		
+		return "<div id=\""
+		+ this.id
+		+ "\" user=\""
+		+ this.bruker
+		+ "\" dato=\""
+		+ this.dato
+		+ "\" likes=\""
+		+ this.likes
+		+ "\">"
+		+ innerHTML
+		+ "</div";
 	}
 }
